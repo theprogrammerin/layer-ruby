@@ -50,7 +50,7 @@ module Layer
     # @return [Layer::RelationProxy] the user's conversations
     # @!macro platform-api
     def conversations
-      RelationProxy.new(self, Conversation, [Operations::List, Operations::Find])
+      RelationProxy.new(self, Conversation, [Operations::List, Operations::Find, Operations::Paginate])
     end
 
     # Returns the user's messages

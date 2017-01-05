@@ -5,6 +5,7 @@ module Layer
       @resource = resource
       @client = client
       @params = { page_size: 100 }
+      @counter = 0
 
       super() do |yielder|
         while response = next_page
@@ -21,9 +22,14 @@ module Layer
 
     def next_page
       response = client.get(resource.url, {}, { params: params })
-      return nil if response.empty?
+      return nil if response.empty? || @counter > max_pages
+      @counter += 1
       params[:from_id] = Layer::Client.normalize_id(response.last['id'])
       response
+    end
+
+    def max_pages
+      ENV['max_conversation_pages'].to_i || 3
     end
 
   end
